@@ -12,6 +12,8 @@ import { useHistory } from "react-router-dom";
 toast.configure();
 
 const Teacher = () => {
+  const { IPFS_LINK, HERO_KU_LINK } = process.env;
+
   const [isConnected, setIsConnected] = useState(false);
   const [currentAccount, setCurrentAccount] = useState(null);
   const [balance, setBalance] = useState(0);
@@ -61,10 +63,7 @@ const Teacher = () => {
     console.log(file);
     let res;
     try {
-      res = await axios.post(
-        "https://tokensprtify.herokuapp.com/encrypt",
-        formData
-      );
+      res = await axios.post(`${HERO_KU_LINK}/encrypt`, formData);
     } catch (e) {
       console.log("error", e);
     }
@@ -98,11 +97,11 @@ const Teacher = () => {
 
     setCourseAddress(t);
     setShow(
-      `Private Key: ${privateKey} \n File link: https://ipfs.io/ipfs/${fh} \n Course Address: ${courseAddress}`
+      `Private Key: ${privateKey} \n File link: ${IPFS_LINK}/${fh} \n Course Address: ${courseAddress}`
     );
     setShow({
       pkey: privateKey,
-      file_link: `https://ipfs.io/ipfs/${fh}`,
+      file_link: `${IPFS_LINK}/${fh}`,
       cs: t,
     });
     console.log(show);
@@ -148,15 +147,11 @@ const Teacher = () => {
     formData.append("file", file2);
     formData.append("comparisonHash", hash);
 
-    const res = await axios.post(
-      `https://tokensprtify.herokuapp.com/fileHashMatch`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    const res = await axios.post(`${HERO_KU_LINK}/fileHashMatch`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     console.log(res.data);
     if (res.data === "verified") {
       toast("Verified, Download starts", { type: "success" });
@@ -202,18 +197,24 @@ const Teacher = () => {
 
   function IfShow() {
     return (
-      <div className='form-wrapper'>
-        <h3 className='info-title-ifShow'>
+      <div className="form-wrapper">
+        <h3 className="info-title-ifShow">
           Course Created Please message these
         </h3>
 
-        <span className='paragraph'><b>File Password:</b> {show.pkey}</span>
+        <span className="paragraph">
+          <b>File Password:</b> {show.pkey}
+        </span>
         <br />
 
-        <span className='paragraph'><b>File link:</b> {show.file_link}</span>
+        <span className="paragraph">
+          <b>File link:</b> {show.file_link}
+        </span>
         <br />
 
-        <span className='paragraph'><b>Subject Id:</b> {show.cs}</span>
+        <span className="paragraph">
+          <b>Subject Id:</b> {show.cs}
+        </span>
       </div>
     );
   }
@@ -234,49 +235,49 @@ const Teacher = () => {
       )}
 
       {isConnected && (
-        <div className='teacherWrapper'>
+        <div className="teacherWrapper">
           <Dashboard
             currentAccount={currentAccount}
             balance={balance}
             username={username}
             onLogout={onLogout}
           />
-          <div className='container'>
-            <h1 className='text-box'>
-              <span style={{ fontWeight: "400" }} className='colorWhite'>
+          <div className="container">
+            <h1 className="text-box">
+              <span style={{ fontWeight: "400" }} className="colorWhite">
                 Teacher's Application
               </span>
             </h1>
           </div>
           {loading ? <Loader /> : <></>}
 
-          <div className='sec-container'>
-            <div className='sec'>
+          <div className="sec-container">
+            <div className="sec">
               {show ? (
                 <IfShow />
               ) : (
                 <>
                   <br />
-                  <form className='form-wrapper' onSubmit={handleCreateCource}>
-                    <div className='info-title'>Create New Course</div>
-                    <h3 className='text-light'>Upload Question paper</h3>
+                  <form className="form-wrapper" onSubmit={handleCreateCource}>
+                    <div className="info-title">Create New Course</div>
+                    <h3 className="text-light">Upload Question paper</h3>
                     <input
-                      className='custom-file-input'
-                      type='file'
-                      id='file'
+                      className="custom-file-input"
+                      type="file"
+                      id="file"
                       onChange={handleFileUpload}
-                        required
+                      required
                     />
-                    <h3 className='text-light'>Choose Exam End time</h3>
+                    <h3 className="text-light">Choose Exam End time</h3>
                     <input
-                      className='exam-date'
-                      type='datetime-local'
-                      id='birthdaytime'
-                      name='birthdaytime'
+                      className="exam-date"
+                      type="datetime-local"
+                      id="birthdaytime"
+                      name="birthdaytime"
                       onChange={handleDeadline}
-                        required
+                      required
                     />
-                    <button className='create-course' type='submit'>
+                    <button className="create-course" type="submit">
                       Create
                     </button>
                   </form>
@@ -284,27 +285,27 @@ const Teacher = () => {
               )}
             </div>
             <>
-              <div className='sec'>
-                <div className='sec'>
-                  <form className='form-wrapper' onSubmit={handleGetAnswer}>
-                    <div className='info-title'>
+              <div className="sec">
+                <div className="sec">
+                  <form className="form-wrapper" onSubmit={handleGetAnswer}>
+                    <div className="info-title">
                       Get students solution sheet
                     </div>
-                    <h3 className='text-light'>Enter File link</h3>
+                    <h3 className="text-light">Enter File link</h3>
                     <input
-                      className='custom-file-input'
+                      className="custom-file-input"
                       onChange={handlelink}
-                      placeholder='IPFS link'
+                      placeholder="IPFS link"
                       required
                     />
-                    <h3 className='text-light'>Enter Student Id</h3>
+                    <h3 className="text-light">Enter Student Id</h3>
                     <input
-                      className='custom-file-input'
+                      className="custom-file-input"
                       onChange={handlestudentId}
-                      placeholder='Enter student id'
+                      placeholder="Enter student id"
                       required
                     />
-                    <button className='create-course' type='submit'>
+                    <button className="create-course" type="submit">
                       Get Answer
                     </button>
                   </form>
