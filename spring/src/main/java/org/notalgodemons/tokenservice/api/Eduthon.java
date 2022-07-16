@@ -53,6 +53,12 @@ public class Eduthon {
     @Qualifier("getContractAddress")
     @Autowired
     private String contractAddress;
+    @Qualifier("getTwilioNo")
+    @Autowired
+    private String TwilioNo;
+    @Qualifier("getMyNo")
+    @Autowired
+    private String MyNo;
     @Autowired
     private Web3j web3j;
     @Autowired
@@ -201,7 +207,7 @@ public class Eduthon {
     public String twillioTest() {
         try {
             ResourceSet<Message> messages = Message.reader()
-                    .setTo(new com.twilio.type.PhoneNumber("+19033296557"))
+                    .setTo(new com.twilio.type.PhoneNumber(TwilioNo))
                     .limit(20)
                     .read();
 
@@ -233,21 +239,21 @@ public class Eduthon {
         try {
 
             ResourceSet<Message> messages = Message.reader()
-                    .setTo(new com.twilio.type.PhoneNumber("+19033296557"))
+                    .setTo(new com.twilio.type.PhoneNumber(TwilioNo))
                     .limit(20)
                     .read();
 
             if (date == LocalDateTime) {
                 Message.creator(
                         new com.twilio.type.PhoneNumber("9818629809"),
-                        new com.twilio.type.PhoneNumber("+19033296557"),
+                        new com.twilio.type.PhoneNumber(TwilioNo),
                         "Sorry you have passed the submission deadline.")
                         .create();
             }
 
             Message.creator(
                     new com.twilio.type.PhoneNumber("9818629809"),
-                    new com.twilio.type.PhoneNumber("+19033296557"),
+                    new com.twilio.type.PhoneNumber(TwilioNo),
                     "You have successfully submitted your answer sheet")
                     .create();
 

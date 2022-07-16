@@ -36,20 +36,35 @@ public class TokenserviceApplication {
     @Qualifier("getContractAddress")
     @Autowired
     private String contractAddress;
+    @Qualifier("getACCOUNT_SID")
+    @Autowired
+    private String ACCOUNT_SID;
+    @Qualifier("getAUTH_TOKEN")
+    @Autowired
+    private String AUTH_TOKEN;
+    @Qualifier("getPRIVATE_KEY")
+    @Autowired
+    private String PRIVATE_KEY;
+    @Qualifier("getRECIPIENT")
+    @Autowired
+    private String RECIPIENT;
+    @Qualifier("getTwilioNo")
+    @Autowired
+    private String TwilioNo;
 
     private ERC20 eip20;
     private Web3j web3j;
 
-    public static final String ACCOUNT_SID = "ACe386d59e4a55a578bcff55afebfef2ce";
-    public static final String AUTH_TOKEN = "e9114c60de48259d229602d553438839";
+    public static final String ACCOUNT_SID = ACCOUNT_SID;
+    public static final String AUTH_TOKEN = AUTH_TOKEN;
     public static MessageReader messageReader;
 
-    private final static String PRIVATE_KEY = "7fcf5a25e02ebbb90b67fadbd27db224e1fd91dda86644f4731239a7c9813229";
+    private final static String PRIVATE_KEY = PRIVATE_KEY;
 
     private final static BigInteger GAS_LIMIT = BigInteger.valueOf(6721975L);
     private final static BigInteger GAS_PRICE = BigInteger.valueOf(20000000000L);
 
-    private final static String RECIPIENT = "0x389e91698e1B650C1bA5e8D066C16B3061e0F778";
+    private final static String RECIPIENT = RECIPIENT;
 
     public static void main(String[] args) {
         SpringApplication.run(TokenserviceApplication.class, args);
@@ -63,7 +78,7 @@ public class TokenserviceApplication {
     public void init() {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         messageReader = Message.reader()
-                .setTo(new com.twilio.type.PhoneNumber("+19033296557"));
+                .setTo(new com.twilio.type.PhoneNumber(TwilioNo));
 
         web3j = Web3j.build(new HttpService());
         TransactionManager transactionManager = new RawTransactionManager(
